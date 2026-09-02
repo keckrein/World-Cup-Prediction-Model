@@ -34,6 +34,30 @@ Its honest one-line summary: **it matches the betting market rather than
 beating it.** That's the expected outcome for a transparent model competing
 against an efficient market, not a shortfall.
 
+## Screenshots
+
+The screenshots below are from June 21, 2026: 48 of 104 matches in, before the field had narrowed. A screenshot from the completed bracket shows a single locked-in outcome; this one shows the model with real uncertainty still on the table, which is closer to what it's actually doing.
+
+![Forecast tab showing Spain at 22% mid-tournament, with round-by-round advancement odds](screenshots/forecast-overview-live.png)
+*Championship odds at 48 matches played. Spain led at 22%, leaving 78% of the field still live — each team's path through the Round of 32, Round of 16, quarters, semis, and final is broken out separately.*
+
+![Knockout bracket mid-tournament with live probabilities on unplayed matches](screenshots/bracket-knockout-live.png)
+*The bracket view before the field had narrowed, showing per-match win probabilities for every remaining pairing.*
+
+![Signal weights and evidence for what the model uses](screenshots/signal-weights-evidence.png)
+*What the model actually uses (Elo + market, 70/30) and the ablation evidence for what got tested and dropped — squad value, squad age, and historical World Cup pedigree.*
+
+![Results tab tracking 91% decisive accuracy at 48 matches](screenshots/results-live-tracking.png)
+*Live scoring against the frozen pre-tournament forecast: match-by-match grading and the biggest live Elo shifts so far.*
+
+![Final results tab showing 84% decisive accuracy and calibration breakdown](screenshots/results-calibration.png)
+*The finished scorecard: 69/82 decisive matches correct, Brier 0.114, and the calibration table broken out by confidence bucket.*
+
+One more, outside the core forecasting loop: the app also auto-syncs its own group predictions into the official FIFA knockout bracket structure.
+
+![Bracket Sync tab auto-filling official FIFA Round-of-32 pairings from model predictions](screenshots/bracket-sync.png)
+*Bracket Sync: takes the model's own group-stage predictions and auto-fills them into the actual FIFA Round-of-32 pairings, so the bracket view stays structurally correct without hand-entering each matchup.*
+
 ## What makes this project worth a look
 
 - **An honest, frozen scorecard.** The live accuracy figure grades the
