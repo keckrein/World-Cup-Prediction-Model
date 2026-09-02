@@ -124,12 +124,7 @@ node refresh_tests.js               # runs the 968-assertion regression suite
 
 ## A note on scope
 
-This is a personal/hobby project, built for the intellectual exercise of
-forecasting a tournament transparently and grading myself honestly against
-it. It is **not** a betting tool and makes no claim to beat the market. Its
-value is as a worked example of building a probabilistic forecasting system
-with a defined specification, an honest evaluation methodology, and a test
-suite that verifies the implementation matches the specification.
+This is an independent portfolio project exploring transparent probabilistic forecasting. It is **not** a betting tool and makes no claim to beat the market. Its value is as a worked example of building a probabilistic forecasting system with a defined specification, an honest evaluation methodology, and a test suite that verifies the implementation matches the specification.
 
 See [`docs/methodology.md`](docs/methodology.md) for how the model works and
 [`docs/validation.md`](docs/validation.md) for the full results, calibration
