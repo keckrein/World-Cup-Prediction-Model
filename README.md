@@ -1,17 +1,8 @@
 # World Cup 2026 Forecasting Model
 
-Prediction markets and sportsbooks price World Cup outcomes about as well as
-any public information can. Beating market accuracy isn't the interesting
-test here, since a model that quietly matches the market isn't obviously
-doing anything a bookmaker or bettor doesn't already do. Calibration is the
-more useful question: when this model says a team has a 70% chance of
-winning, does that team actually win 70% of the time? The model is graded
-against this claim.
+I built a probabilistic forecasting system for the 2026 World Cup that combines Elo ratings, market information, a Dixon-Coles goal model, and Monte Carlo simulation—and then built a React application to expose the model's predictions, uncertainty, and live performance. Rather than claiming to beat the betting market, I designed the project around a harder-to-fake question: are its probabilities actually calibrated? Calibration is the more useful question: when this model says a team has a 70% chance of winning, does that team actually win 70% of the time? The model is graded against this claim.
 
-This model blends team-strength signals (Elo plus de-vigged prediction-market
-and sportsbook odds) with a Dixon-Coles Poisson goal model and a Monte Carlo
-tournament simulation, producing championship, round-advancement, and
-per-match probabilities. Built as a single self-contained React application.
+This model blends team-strength signals (Elo plus de-vigged prediction-market and sportsbook odds) with a Dixon-Coles Poisson goal model and a Monte Carlo tournament simulation, producing championship, round-advancement, and per-match probabilities. Built as a single self-contained React application.
 
 The model was run live throughout the tournament — logging every result,
 updating its live ratings, and re-forecasting after each matchday — and its
@@ -34,6 +25,8 @@ Its honest one-line summary: **it matches the betting market rather than
 beating it.** That's the expected outcome for a transparent model competing
 against an efficient market, not a shortfall.
 
+Out-of-sample: Elo + market RPS 0.2006 vs. 0.2082 for Elo alone and 0.2007 for the betting-market benchmark.
+
 ## Screenshots
 
 The screenshots below are from June 21, 2026: 48 of 104 matches in, before the field had narrowed. A screenshot from the completed bracket shows a single locked-in outcome; this one shows the model with real uncertainty still on the table, which is closer to what it's actually doing.
@@ -53,7 +46,10 @@ The screenshots below are from June 21, 2026: 48 of 104 matches in, before the f
 ![Final results tab showing 84% decisive accuracy and calibration breakdown](screenshots/results-calibration.png)
 *The finished scorecard: 69/82 decisive matches correct, Brier 0.114, and the calibration table broken out by confidence bucket.*
 
-One more, outside the core forecasting loop: the app also auto-syncs its own group predictions into the official FIFA knockout bracket structure.
+Two more, outside the core forecasting loop:
+
+![Scenarios tab with real-world event toggles repricing the model instantly](screenshots/scenario-modeling.png)
+*Scenario presets: toggling real-world events (injuries, fitness doubts, home-crowd effects) reprices the model and Monte Carlo simulation instantly.*
 
 ![Bracket Sync tab auto-filling official FIFA Round-of-32 pairings from model predictions](screenshots/bracket-sync.png)
 *Bracket Sync: takes the model's own group-stage predictions and auto-fills them into the actual FIFA Round-of-32 pairings, so the bracket view stays structurally correct without hand-entering each matchup.*
@@ -78,7 +74,9 @@ One more, outside the core forecasting loop: the app also auto-syncs its own gro
   the frozen-baseline bug — is written up with what went wrong, why it
   mattered, and what changed. See `docs/model-history.md`.
 
-## How this was built
+## How this was built: AI-assisted development
+
+I used Claude as a development tool throughout the project, particularly for implementation, refactoring, and test generation. I retained responsibility for the modeling approach, evaluation design, specification, debugging, and analytical decisions. I independently reviewed the generated implementation and used regression tests and out-of-sample evaluation to verify its behavior.
 
 This was built through an iterative AI-assisted workflow with Claude. I set
 the modeling approach (the Elo/market blend, the frozen-baseline evaluation
