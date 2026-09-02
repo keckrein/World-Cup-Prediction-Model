@@ -61,28 +61,41 @@ Two more, outside the core forecasting loop:
 .
 ├── README.md                     ← you are here
 ├── LICENSE
-├── worldcup2026.jsx              ← the model + app (single file)
+├── index.html
+├── package.json
+├── vite.config.js
+├── src/
+│   ├── main.jsx                  ← React entry point
+│   └── worldcup2026.jsx          ← the model + app (single file)
 ├── docs/
 │   ├── methodology.md            ← how the model works
 │   ├── validation.md             ← out-of-sample results, calibration, limitations
 │   └── model-history.md          ← every mid-tournament bug and fix
-├── screenshots/                  ← app screenshots
-├── refresh_gapcheck.js           ← lists scheduled matches missing results
-├── refresh_verify.js             ← pre-simulation sanity checks
-├── refresh_regen.js              ← grades results + regenerates the forecast
-└── refresh_tests.js              ← 968-assertion regression suite
+├── screenshots/                  ← app screenshots referenced above
+├── refresh/
+│   ├── refresh_gapcheck.js       ← lists scheduled matches missing results
+│   ├── refresh_verify.js         ← pre-simulation sanity checks
+│   ├── refresh_regen.js          ← grades results + regenerates the forecast
+│   └── refresh_tests.js          ← 968-assertion regression suite
+└── .github/workflows/deploy.yml  ← builds and deploys to GitHub Pages on push
 ```
 
 ## Running it locally
 
-The app is distributed as a self-contained React artifact rather than a conventional npm project. There's no bundler or `package.json` in this repo, so `npm start` won't work out of the box. Paste `worldcup2026.jsx` into something that can render a React artifact (CodeSandbox, an existing Vite/CRA shell) to actually run it.
-
-The tooling scripts are plain Node.js. The tournament is complete, so these mainly serve to reproduce or re-verify the final numbers rather than to refresh anything live:
+This is a Vite + React project.
 
 ```bash
-node refresh_gapcheck.js "Jul 19"   # confirms every match is logged (reports COMPLETE)
-node refresh_regen.js 103 30000     # re-grades + re-simulates the completed tournament
-node refresh_tests.js               # runs the 968-assertion regression suite
+npm install
+npm run dev      # starts a local dev server
+npm run build    # builds a production bundle to dist/
+```
+
+The tooling scripts in `refresh/` are plain Node.js. The tournament is complete, so these mainly serve to reproduce or re-verify the final numbers rather than to refresh anything live:
+
+```bash
+node refresh/refresh_gapcheck.js "Jul 19"   # confirms every match is logged (reports COMPLETE)
+node refresh/refresh_regen.js 103 30000     # re-grades + re-simulates the completed tournament
+node refresh/refresh_tests.js               # runs the 968-assertion regression suite
 ```
 
 ## How this was built: AI-assisted development
