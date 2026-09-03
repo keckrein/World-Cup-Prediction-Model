@@ -31,4 +31,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
           uploads: |
-            ./dist/ => /usr/home/vincecronin/public_html/k-project-01/
+            ./dist/ => /usr/home/vincecronin/public_html/croninprojects.org/k-project-01/
