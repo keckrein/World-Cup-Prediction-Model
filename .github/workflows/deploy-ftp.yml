@@ -31,4 +31,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./dist/
-          server-dir: /usr/home/vincecronin/public_ftp/k-project-01/
+          server-dir: /usr/home/vincecronin/public_html/k-project-01/
