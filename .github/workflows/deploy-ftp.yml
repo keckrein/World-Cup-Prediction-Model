@@ -23,12 +23,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload to Pair via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+      - name: Upload to Pair via SFTP
+        uses: Dylan700/sftp-upload-action@latest
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/
-          server-dir: /usr/home/vincecronin/public_html/k-project-01/
+          port: 22
+          uploads: |
+            ./dist/ => /usr/home/vincecronin/public_html/k-project-01/
