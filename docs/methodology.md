@@ -2,10 +2,11 @@
 
 ## What the model is
 
-A transparent blend of an Elo rating system and de-vigged prediction-market and
-sportsbook probabilities, fed into a Dixon-Coles Poisson goal model and a Monte
-Carlo tournament simulation. On held-out historical World Cups, it performs on
-par with the betting market. It does not demonstrate a market-beating edge.
+A transparent blend of an Elo rating system and de-vigged (bookmaker-margin-
+removed) prediction-market and sportsbook probabilities, fed into a
+Dixon-Coles Poisson goal model and a Monte Carlo tournament simulation. On
+held-out historical World Cups, it performs on par with the betting market.
+It does not demonstrate a market-beating edge.
 
 ## Pipeline
 

@@ -21,7 +21,7 @@ signal about true team strength than 90 minutes of play. The stored scoreline
 still shows the level regulation result; only the outcome label changes.
 
 Re-grading the same match log with the fix applied moved the scorecard from
-45/52 decisive (87%) to 45/54 (87%), and Brier from 0.099 to 0.114. Both got
+45/52 decisive (87%) to 45/54 (83%), and Brier from 0.099 to 0.114. Both got
 worse, not better. The model had picked the wrong team in both shootouts. The
 fix surfaced two real misses that had been sitting in the draw bucket — the
 scorecard had been inflated by a measurement gap, and closing that gap was
