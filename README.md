@@ -2,7 +2,7 @@
 
 I built a probabilistic forecasting system for the 2026 World Cup that combines Elo ratings, market information, a Dixon-Coles goal model, and Monte Carlo simulation—and then built a React application to expose the model's predictions, uncertainty, and live performance. Rather than claiming to beat the betting market, I focused on a more meaningful question: are the probabilities actually trustworthy? When the model says a team has a 70% chance of winning, does that team win roughly 70% of the time? The model is graded against that claim.
 
-**Under the hood**: the model blends Elo with de-vigged prediction-market and sportsbook odds, feeds those strength estimates into a Dixon-Coles Poisson goal model, and uses Monte Carlo simulation to produce championship, round-advancement, and per-match probabilities.
+**Under the hood**: the model blends Elo with de-vigged prediction-market and sportsbook odds (de-vigging removes the bookmaker's built-in profit margin, so odds reflect actual implied probability), feeds those strength estimates into a Dixon-Coles Poisson goal model, and uses Monte Carlo simulation to produce championship, round-advancement, and per-match probabilities.
 
 The model was run live throughout the tournament — logging every result, updating its live ratings, and re-forecasting after each matchday — and its predictions were graded against a **frozen pre-tournament baseline** the entire way, so its scorecard reflects genuine out-of-sample performance rather than hindsight.
 
@@ -15,9 +15,9 @@ The model finished the 104-match tournament with:
 | Decisive-match accuracy | **69 / 82 (84%)** |
 | Brier score | **0.114** |
 | Champion prediction | **Spain (final pick 53%) — correct** |
-| Calibration | No statistically detectable miscalibration (z = +0.69) |
+| Calibration | No statistically detectable miscalibration (z = +0.69, team-clustered; see [`docs/validation.md`](docs/validation.md#calibration)) |
 
-**Out-of-sample RPS (lower is better)**: 0.2006 for Elo + market vs. 0.2082 for Elo alone and 0.2007 for the betting-market benchmark.
+**Out-of-sample RPS** (Ranked Probability Score, a scoring rule for ordered outcomes like round-by-round advancement; lower is better): 0.2006 for Elo + market vs. 0.2082 for Elo alone and 0.2007 for the betting-market benchmark.
 
 **Bottom line**: the model essentially matched the betting market rather than beating it.
 
@@ -30,6 +30,9 @@ The screenshots below are from June 21, 2026: 48 of 104 matches in, before the f
 
 ![Knockout bracket mid-tournament with live probabilities on unplayed matches](screenshots/bracket-knockout-live.png)
 *The bracket view before the field had narrowed, showing per-match win probabilities for every remaining pairing.*
+
+![Group standings with expected points, championship odds, and the third-place qualification table](screenshots/bracket-groups-live.png)
+*The Groups tab: expected standings for all 12 groups, plus the third-place table that ranks all 12 third-place finishers together and maps the top 8 to their fixed Round-of-32 slots.*
 
 ![Signal weights and evidence for what the model uses](screenshots/signal-weights-evidence.png)
 *The model's core signals (Elo + market, 70/30) alongside ablation evidence for signals that were tested and dropped: squad value, squad age, and historical World Cup pedigree.*
