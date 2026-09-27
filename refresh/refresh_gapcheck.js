@@ -1,7 +1,7 @@
 // Deterministic gap check: which fixtures on/before a cutoff date lack a result?
-// Usage: node /tmp/gaps.js "Jun 23"
+// Usage (from the repo root): node refresh/refresh_gapcheck.js "Jun 23"
 const fs=require('fs');
-const src=fs.readFileSync('worldcup2026.jsx','utf8');
+const src=fs.readFileSync(__dirname+'/../src/worldcup2026.jsx','utf8');
 const cutoff=process.argv[2]||null;
 const MON={Jun:6,Jul:7};
 const toNum=d=>{const[m,day]=d.replace('"','').split(' ');return MON[m]*100+parseInt(day);};

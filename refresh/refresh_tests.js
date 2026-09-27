@@ -7,13 +7,13 @@
 // silently: they assert that every forward-looking probability is CONDITIONAL on
 // the actual current tournament state.
 //
-// Usage:  node refresh_tests.js
+// Usage (from the repo root):  node refresh/refresh_tests.js   (or: npm test)
 // Exit 0 = all pass, 1 = a failure (safe to wire into CI or a pre-swap check).
 //
 // The suite builds the SAME engine module regen/verify use, so it tests real code.
 
 const fs=require('fs');
-const SRC=__dirname+'/worldcup2026.jsx';
+const SRC=__dirname+'/../src/worldcup2026.jsx';
 
 // ---- build the engine exactly as refresh_regen.js does -----------------------
 (function buildEngine(){

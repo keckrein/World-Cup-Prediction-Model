@@ -5,11 +5,11 @@
 //   2. Only TWO simulations run: "now" (current results) and "yesterday" (for the
 //      movers panel). Both at a configurable N (default 30k — title odds are stable
 //      to <0.1% by 30k; movers below ~0.3% are already disclosed as noise).
-// Usage: node /tmp/regen_lean.js <yesterday_cutoff_index> [N]
+// Usage (from the repo root): node refresh/refresh_regen.js <yesterday_cutoff_index> [N]
 //   yesterday_cutoff_index = number of results that count as "through yesterday"
 //   (i.e. results.length BEFORE today's newly added matches).
 const fs=require('fs');
-const SRC='/mnt/user-data/outputs/worldcup2026.jsx';
+const SRC=__dirname+'/../src/worldcup2026.jsx';
 const src=fs.readFileSync(SRC,'utf8');
 const cutoff=parseInt(process.argv[2]);
 const N=parseInt(process.argv[3]||'30000');
@@ -31,7 +31,7 @@ console.log('  -> verification passed; proceeding to simulate.\n');
 const lines=src.split('\n');
 let end=0;for(let i=0;i<lines.length;i++){if(lines[i].startsWith('function MiniBar')){end=i;break;}}
 let code=lines.slice(0,end).join('\n').replace(/^import[^\n]*\n/,'');
-code+="\nmodule.exports={buildBaseProbs,buildStaticProbs,buildMarketProbs,WEIGHT_PRESETS,runMonteCarlo,seedElo,applyEloResult,liveBlendProbs,OFFICIAL_RESULTS,SNAP_PRE,gradeResult};";
+code+="\nmodule.exports={buildBaseProbs,buildStaticProbs,buildMarketProbs,WEIGHT_PRESETS,runMonteCarlo,seedElo,applyEloResult,liveBlendProbs,OFFICIAL_RESULTS,SNAP_PRE,gradeResult,PRED_MARKET_PRE,SPORTS_BOOK_PRE,FIXTURES};";
 fs.writeFileSync('/tmp/_eng.js',code);
 const M=require('/tmp/_eng.js');
 const w=M.WEIGHT_PRESETS.evidence,mods={};
@@ -42,7 +42,7 @@ try{
   if(/gradeResult/.test(eng2)){
     const G=require('/tmp/_eng.js');
     if(G.gradeResult){
-      const bp=G.buildBaseProbs(w,{},null);
+      const bp=G.buildBaseProbs(w,{},{pred:G.PRED_MARKET_PRE,book:G.SPORTS_BOOK_PRE,ts:0});
       let c=0,d=0,bs=0,n=0;
       for(const r of G.OFFICIAL_RESULTS){const g=G.gradeResult(r,bp);bs+=g.brier;n++;if(g.correct===null)continue;d++;if(g.correct)c++;}
       console.log('SCORECARD: '+c+'/'+d+' decisive ('+(d?(100*c/d).toFixed(0):0)+'%) | draws '+(n-d)+' | Brier '+(bs/n).toFixed(3)+' over '+n);
@@ -55,7 +55,7 @@ function fc(rs,n){
   for(const r of rs) if(r.scoreA!=null) el=M.applyEloResult(el,r).elo;
   const played=rs.filter(r=>r.scoreA!=null).length;
   const sW=w.wFIFA,mW=(w.wPredMarket||0)+(w.wSportsBook||0);
-  return M.runMonteCarlo(M.liveBlendProbs({staticProbs:sp,marketProbs:mp,elo:el,matchesPlayed:played,marketWeight:mW,staticWeight:sW,marketAgeHours:0,baseProbs:b}),n);
+  return M.runMonteCarlo(M.liveBlendProbs({staticProbs:sp,marketProbs:mp,elo:el,matchesPlayed:played,marketWeight:mW,staticWeight:sW,marketAgeHours:0,baseProbs:b}),n,rs,M.FIXTURES);
 }
 const all=M.OFFICIAL_RESULTS, prev=all.slice(0,cutoff);
 const f=v=>Math.round(v*100000)/100000;
