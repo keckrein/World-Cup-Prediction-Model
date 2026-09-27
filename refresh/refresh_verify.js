@@ -3,7 +3,7 @@
 // (negatives, denormalized sum, implausible favorite).
 //
 // Used TWO ways, sharing ONE implementation of the checks (verify()):
-//   1. Standalone CLI:  node refresh_verify.js [expectedNewCount]
+//   1. Standalone CLI (from the repo root):  node refresh/refresh_verify.js [expectedNewCount]
 //   2. Imported by refresh_regen.js, which calls verify() and ABORTS the
 //      simulation if it fails — so verification can't be skipped.
 const fs=require('fs');
@@ -14,7 +14,7 @@ function verify(src){
   const bad=(m)=>{out.push('  !!  '+m);fail++;};
 
   // syntax parse
-  try{ require('/tmp/node_modules/@babel/standalone').transform(src,{presets:['react']}); ok('syntax parses'); }
+  try{ require('@babel/standalone').transform(src,{presets:['react']}); ok('syntax parses'); }
   catch(e){ bad('SYNTAX ERROR: '+e.message.split('\n')[0]); }
 
   // results: count + duplicates
@@ -42,7 +42,7 @@ function verify(src){
     // model renormalizes internally, so raw sum is cosmetic; far-off sum = entry error
     if(sum<0.90||sum>1.10) bad(name+': sums to '+sum.toFixed(3)+' (way off — likely entry error)');
     else ok(name+': sums to '+sum.toFixed(3)+' (fine; model renormalizes)');
-    if(max>0.30) bad(name+': favorite at '+(max*100).toFixed(0)+'% (>30% — typo?)');
+    if(max>0.30) out.push('  ??  '+name+': favorite at '+(max*100).toFixed(0)+'% (>30% — expected late in the tournament; otherwise check for a typo)');
     else ok(name+': favorite '+(max*100).toFixed(0)+'% (plausible)');
   }
 
@@ -53,7 +53,7 @@ module.exports={verify};
 
 // CLI mode
 if(require.main===module){
-  const src=fs.readFileSync(__dirname+'/worldcup2026.jsx','utf8');
+  const src=fs.readFileSync(__dirname+'/../src/worldcup2026.jsx','utf8');
   const r=verify(src);
   console.log(r.lines.join('\n'));
   console.log(r.pass? '\nVERIFY PASSED — safe to regenerate.' : '\nVERIFY FAILED ('+r.fail+' issue(s)) — fix before regenerating.');

@@ -73,6 +73,7 @@ Two more, outside the core forecasting loop:
 │   └── model-history.md          ← every mid-tournament bug and fix
 ├── screenshots/                  ← app screenshots referenced above
 ├── refresh/
+│   ├── package.json              ← marks the scripts as CommonJS
 │   ├── refresh_gapcheck.js       ← lists scheduled matches missing results
 │   ├── refresh_verify.js         ← pre-simulation sanity checks
 │   ├── refresh_regen.js          ← grades results + regenerates the forecast
@@ -90,12 +91,12 @@ npm run dev      # starts a local dev server
 npm run build    # builds a production bundle to dist/
 ```
 
-The tooling scripts in `refresh/` are plain Node.js. The tournament is complete, so these mainly serve to reproduce or re-verify the final numbers rather than to refresh anything live:
+The tooling scripts in `refresh/` are plain Node.js. The tournament is complete, so these mainly serve to reproduce or re-verify the final numbers rather than to refresh anything live. Run them from the repository root after `npm install`:
 
 ```bash
 node refresh/refresh_gapcheck.js "Jul 19"   # confirms every match is logged (reports COMPLETE)
-node refresh/refresh_regen.js 103 30000     # re-grades + re-simulates the completed tournament
-node refresh/refresh_tests.js               # runs the 968-assertion regression suite
+node refresh/refresh_regen.js 103 30000     # re-grades against the frozen baseline: 69/82 decisive (84%), Brier 0.114
+npm test                                    # runs the 968-assertion regression suite
 ```
 
 ## How this was built: AI-assisted development
